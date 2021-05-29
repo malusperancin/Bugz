@@ -70,6 +70,7 @@ class Evento {
     this.lugar = o["lugar"];
     this.tipo = o["tipo"];
     this.responsavel = o["responsavel"];
-    this.participantes = o["participantes"];
+    for (int i = 0; i < o["participantes"].length; i++)
+      this.participantes[i] = o["participantes"][i];
   }
 }

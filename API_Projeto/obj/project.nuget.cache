@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RO2pgtawxIHrZ10AWlc3jRyk5Gb2N5ktrAj7UC60pC0d/1ypdzZrUOBPgpn59FdO8plnaB242tSfeD0tkRhOiQ==",
+  "dgSpecHash": "t2QEJlVawNFqLIhTXEcYznW+4hKpkm9h6fQzYt510Hm2mVSJ3FS1YrB6DCUVvRFzA+MeeH5pgiQfaKklO4uv0g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\maria\\Desktop\\API_Projeto\\ProjetoPratica_API.csproj",
+  "projectFilePath": "C:\\Users\\maria\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\ProjetoPratica_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maria\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
     "C:\\Users\\maria\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",

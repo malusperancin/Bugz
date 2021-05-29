@@ -5293,11 +5293,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\maria\\Desktop\\API_Projeto\\ProjetoPratica_API.csproj",
+      "projectUniqueName": "C:\\Users\\maria\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\ProjetoPratica_API.csproj",
       "projectName": "ProjetoPratica_API",
-      "projectPath": "C:\\Users\\maria\\Desktop\\API_Projeto\\ProjetoPratica_API.csproj",
+      "projectPath": "C:\\Users\\maria\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\ProjetoPratica_API.csproj",
       "packagesPath": "C:\\Users\\maria\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\maria\\Desktop\\API_Projeto\\obj\\",
+      "outputPath": "C:\\Users\\maria\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\maria\\AppData\\Roaming\\NuGet\\NuGet.Config",

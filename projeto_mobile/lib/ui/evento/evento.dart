@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_mobile/models/api_services.dart';
 import 'package:projeto_mobile/models/evento_model.dart';
-import 'package:projeto_mobile/nav/navbar.dart';
 import 'package:projeto_mobile/ui/evento/componentes/form_evento.dart';
 
 class Eventos extends StatefulWidget {
@@ -121,6 +120,18 @@ class _EventoState extends State<Eventos> {
                                   TextStyle(color: Colors.black, fontSize: 18),
                             ),
                           ]),
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            for (int i;
+                                i < eventos[index].participantes.length;
+                                i++)
+                              Text(
+                                eventos[index].participantes[i].nome,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                              ),
+                          ])
                     ],
                   )
                 ],
