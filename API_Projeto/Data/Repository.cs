@@ -120,7 +120,7 @@ namespace ProjetoPratica_API.Data
             return result;
         }
 
-        // OK??
+        // OK
         public List<Equipes> SpGetEquipes()    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -132,13 +132,15 @@ namespace ProjetoPratica_API.Data
             SqlDataReader leitor = cmd.ExecuteReader();
 
             var result = new List<Equipes>();
+            var funcionarios = SpGetAllFuncionarios();
 
             while (leitor.Read())
             {
                 Equipes dados = new Equipes(
                     (int)leitor["id"],
                     (string)leitor["nome"],
-                    (string)leitor["departamento"]
+                    (string)leitor["departamento"],
+                    funcionarios.FindAll(func => func.Equipe == (string)leitor["nome"]).ToArray()
                 );
 
                 result.Add(dados);
