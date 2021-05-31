@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using ProjetoPratica_API.Data;
 
-
 namespace ProjetoPratica_API.Data
 {
     public interface IRepository
@@ -21,11 +20,18 @@ namespace ProjetoPratica_API.Data
         void Entry<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
 
-        Task<Funcionarios[]> GetAllFuncionarios();
-        Task<Funcionarios> GetFuncionarioById(int Id);
         List<Funcionarios> SpGetAllFuncionarios();
+        Funcionarios GetFuncionarioById(int id);
         List<Equipes> SpGetEquipes();
         List<Eventos> SpGetEventos();
+        Eventos GetEventoById(int idEvento);
+        void SpAdicionarEvento(Eventos evento);
+        void SpAtualizarEvento(Eventos evento, Eventos antigo);
         List<String> SpGetParticipantes(int idEvento);
+        void SpDeleterEvento(int id);
+        Task<Lugar[]> GetAllLugares();
+        Task<Lugar> GetLugarById(int id);
+        Task<Tipo[]> GetAllTipos();
+        Task<Tipo> GetTipoById(int id);
     }
 }

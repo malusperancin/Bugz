@@ -9,5 +9,7 @@ namespace ProjetoPratica_API.Data
         {
         }
         public DbSet<Funcionarios> Funcionarios { get; set; }
+        public DbSet<Tipo> Tipo { get; set; }
+        public DbSet<Lugar> Lugar { get; set; }
     }
 }

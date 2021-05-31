@@ -6,13 +6,20 @@ namespace ProjetoPratica_API.Models
     {
 
         public Funcionarios(int id,string foto,string nome,string departamento,string apelido,string equipe){
-        Id = id;
-        Foto = foto;
-        Nome = nome;
-        Departamento = departamento;
-        Apelido = apelido;
-        Equipe = equipe;
+            Id = id;
+            Foto = foto;
+            Nome = nome;
+            Departamento = departamento;
+            Apelido = apelido;
+            Equipe = equipe;
         }
+
+        public Funcionarios(int id, string nome){
+            Id = id;
+            Nome = nome;
+        }
+
+        public Funcionarios(){}
 
         // [Key]
         //public Usuarios(int id, string nome, string apelido, string email, string celular, DateTime data, int foto)

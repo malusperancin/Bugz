@@ -14,10 +14,10 @@ namespace ProjetoPratica_API.Controllers
     [EnableCors("*")]
     [Route("api/[controller]")]
     [ApiController]
-    public class FuncionariosController : Controller
+    public class LugaresController : Controller
     {
         public IRepository Repo { get; }
-        public FuncionariosController(IRepository repo)
+        public LugaresController(IRepository repo)
         {
             this.Repo = repo;
         }
@@ -28,7 +28,8 @@ namespace ProjetoPratica_API.Controllers
         {
             try
             {
-                var result =  this.Repo.SpGetAllFuncionarios();
+                var result =  await this.Repo.GetAllLugares();
+                
                 return Ok(result);
             }
             catch
@@ -37,12 +38,14 @@ namespace ProjetoPratica_API.Controllers
             }
         }
 
-        [HttpGet("{FuncionarioId}")]
-        public async Task<IActionResult> Get(int FuncionarioId)
+        [HttpGet("{LugarId}")]
+        public async Task<IActionResult> Get(int LugarId)
         {
             try
             {
-                var result = this.Repo.GetFuncionarioById(FuncionarioId);
+                var result = await this.Repo.GetLugarById(LugarId);
+                if(result == null) return NotFound();
+
                 return Ok(result);
             }
             catch

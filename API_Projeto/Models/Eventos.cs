@@ -6,13 +6,17 @@ namespace ProjetoPratica_API.Models
     {
 
         public Eventos(int id,string nome,string data,string lugar,string tipo,string responsavel, Funcionarios[] participantes ){
-        Id = id;
-        Nome = nome;
-        Data = data;
-        Lugar = lugar;
-        Tipo = tipo;
-        Responsavel = responsavel;
-        Participantes = participantes;
+            Id = id;
+            Nome = nome;
+            Data = data;
+            Lugar = lugar;
+            Tipo = tipo;
+            Responsavel = responsavel;
+            Participantes = participantes;
+        }
+
+        public Eventos(){
+            
         }
 
 
@@ -23,6 +27,5 @@ namespace ProjetoPratica_API.Models
         public string Tipo { get; set; }
         public string Responsavel { get; set; }
         public Funcionarios[] Participantes { get; set; }
-
     }
 }

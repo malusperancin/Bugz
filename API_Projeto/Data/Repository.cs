@@ -29,6 +29,7 @@ namespace ProjetoPratica_API.Data
             //throw new System.NotImplementedException();
             this.Context.Remove(entity);
         }
+
         public async Task<bool> SaveChangesAsync()
         {
             // Como é tipo Task vai gerar thread, então vamos definir o método como assíncrono (async)
@@ -36,6 +37,7 @@ namespace ProjetoPratica_API.Data
             // Ainda verifica se fez alguma alteração no BD, se for maior que 0 retorna true ou false
             return (await this.Context.SaveChangesAsync() > 0);
         }
+
         public void Update<T>(T entity) where T : class
         {
             //throw new System.NotImplementedException();
@@ -56,24 +58,46 @@ namespace ProjetoPratica_API.Data
 
             return await consultaUsuarios.ToArrayAsync();
         }
-        public async Task<Funcionarios> GetFuncionarioById(int Id)
-        {
 
-            //throw new System.NotImplementedException();
-            //Retornar para uma query qualquer do tipo Aluno
-            IQueryable<Funcionarios> consultaUsuario = (IQueryable<Funcionarios>)this.Context.Funcionarios;
-            consultaUsuario = consultaUsuario.OrderBy(u => u.Id).Where(usuario => usuario.Id == Id);
-            // aqui efetivamente ocorre o SELECT no BD
-            return await consultaUsuario.FirstOrDefaultAsync();
+        // OK
+        public Funcionarios GetFuncionarioById(int id)
+        {
+            List<Funcionarios> funcionarios = SpGetAllFuncionarios();
+            var result = funcionarios.Find(fun => fun.Id == id);
+            return result;
         }
 
-         public List<Funcionarios> SpGetAllFuncionarios()    
+        // OK - ID DO RESPONSAVEL???
+        public void SpAdicionarEvento(Eventos evento)
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
             con.Open();
             
             SqlCommand cmd = new SqlCommand("comando", con);
-            cmd.CommandText = "sp_getAllFuncs ";
+
+            cmd.CommandText = $"sp_addEvento '{evento.Nome}', '{evento.Data}', '{evento.Lugar}', '{evento.Tipo}', {2}";
+
+            SqlDataReader leitor = cmd.ExecuteReader();
+            cmd.CommandText = "";
+
+            while(leitor.Read())
+                for(int i = 0; i < evento.Participantes.Length; i++)
+                    cmd.CommandText += $"insert into ParticipanteEvento values ({evento.Participantes[i].Id}, {(decimal)leitor["id"]})";
+
+            leitor.Close();
+            cmd.ExecuteNonQuery();
+
+            con.Close();
+        }
+
+        // OK
+        public List<Funcionarios> SpGetAllFuncionarios()    
+        {
+            SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
+            con.Open();
+            
+            SqlCommand cmd = new SqlCommand("comando", con);
+            cmd.CommandText = "sp_getAllFuncs";
 
             SqlDataReader leitor = cmd.ExecuteReader();
 
@@ -87,8 +111,7 @@ namespace ProjetoPratica_API.Data
                     (string)leitor["nome"],
                     (string)leitor["departamento"],
                     (string)leitor["apelido"],
-                    (string)leitor["equipe"]
-                    );
+                    (string)leitor["equipe"]);
 
                 result.Add(dados);
             }
@@ -97,6 +120,7 @@ namespace ProjetoPratica_API.Data
             return result;
         }
 
+        // OK??
         public List<Equipes> SpGetEquipes()    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -115,7 +139,7 @@ namespace ProjetoPratica_API.Data
                     (int)leitor["id"],
                     (string)leitor["nome"],
                     (string)leitor["departamento"]
-                    );
+                );
 
                 result.Add(dados);
             }
@@ -124,6 +148,7 @@ namespace ProjetoPratica_API.Data
             return result;
         }
 
+        // OK
         public List<Eventos> SpGetEventos()    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -136,13 +161,12 @@ namespace ProjetoPratica_API.Data
 
             var even = new List<Eventos>();
             int idAnterior = 1;
-            int index = 0;
-            Funcionarios part;
+            
             leitor.Read();
-            do
+
+            for(int i = 0;i < leitor.RecordsAffected;)
             {
-                Funcionarios[] participantes = new Funcionarios[4];
-                int i = 0;
+                List<Funcionarios> participantes = new List<Funcionarios>();
 
                 Eventos dados = new Eventos(
                     (int)leitor["id"],
@@ -152,46 +176,38 @@ namespace ProjetoPratica_API.Data
                     (string)leitor["tipo"],
                     (string)leitor["nomeResponsavel"],
                     null
-                    );
+                );
 
                 do
                 {
-                    part = new Funcionarios(
-                    (int)leitor["idParticipante"],
-                    null,
-                    (string)leitor["nomeParticipante"],
-                    null,
-                    null,
-                    null
+                    Funcionarios part = new Funcionarios(
+                        (int)leitor["idParticipante"],
+                        (string)leitor["nomeParticipante"]
                     );
-                    participantes[i] = part;
+                    
+                    participantes.Add(part);
+
                     idAnterior = (int)leitor["id"];
                     
                     try{
                         leitor.Read();
-                        index++;
-                        Console.WriteLine((int)leitor["id"]);
+                        i++;
                     }
                     catch{
                         break;
                     }
-                    i++;
                 }
-                while ((int)leitor["id"] == idAnterior);
+                while (i < leitor.RecordsAffected && (int)leitor["id"] == idAnterior);
 
-                dados.Participantes = participantes;
-                
-
+                dados.Participantes = participantes.ToArray();
                 even.Add(dados);
-                if(leitor.RecordsAffected == index)
-                    break;
             }
-            while(true);
 
             con.Close();
             return even;
         }
 
+        // NAO USAMOS MAIS
         public List<String> SpGetParticipantes(int idEvento)    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -211,6 +227,94 @@ namespace ProjetoPratica_API.Data
 
             con.Close();
             return part;
+        }
+
+        // OK
+        public Eventos GetEventoById(int idEvento)
+        {
+            List<Eventos> eventos = SpGetEventos();
+            Eventos evento = eventos.Find(e => e.Id == idEvento);
+            return evento;
+        }
+
+        // OK EU ACHO
+        public void SpAtualizarEvento(Eventos evento, Eventos antigo)
+        {
+            SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
+            con.Open();
+            
+            SqlCommand cmd = new SqlCommand("comando", con);
+
+            // AS INFORMAÇÕES DO EVENTO
+
+            cmd.CommandText = $"sp_updateEvento {evento.Id}, '{evento.Nome}', '{evento.Data}', '{evento.Lugar}', '{evento.Tipo}', {2}";
+            cmd.ExecuteNonQuery();
+
+            // PARTICIPANTES
+
+            cmd.CommandText = "";
+
+            var novosPar = evento.Participantes.ToList<Funcionarios>();
+            var antigosPar = antigo.Participantes.ToList<Funcionarios>();
+
+            // tira os iguais
+            for(int i = 0; i < antigo.Participantes.Length; i++)
+                novosPar.Remove(novosPar.Find(p => p.Id == antigo.Participantes[i].Id));
+
+            for(int i = 0; i < evento.Participantes.Length; i++)
+                antigosPar.Remove(antigosPar.Find(p => p.Id == evento.Participantes[i].Id));
+
+            for(int i = 0; i < novosPar.Count; i++)
+                cmd.CommandText += $"insert into ParticipanteEvento values ({novosPar[i].Id}, {evento.Id}) ";
+
+            cmd.CommandText += " delete from ParticipanteEvento where ";
+
+            for(int i = 0; i < antigosPar.Count; i++)
+                cmd.CommandText += $"idParticipante={antigosPar[i].Id} " + (i==antigosPar.Count-1?" ":"or ");
+
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+
+        // OK        
+        public void SpDeleterEvento(int id)
+        {
+            SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
+            con.Open();
+            
+            SqlCommand cmd = new SqlCommand("comando", con);
+
+            cmd.CommandText = $"delete from ParticipanteEvento where idEvento = {id} delete from Evento where id = {id}";
+            cmd.ExecuteNonQuery();
+        }
+        
+        public async Task<Lugar[]> GetAllLugares()
+        {
+            IQueryable<Lugar> consultaLugares = (IQueryable<Lugar>)this.Context.Lugar;
+            consultaLugares = consultaLugares.OrderBy(l => l.Id);
+
+            return await consultaLugares.ToArrayAsync();
+        }
+
+        public async Task<Lugar> GetLugarById(int id)
+        {
+            IQueryable<Lugar> consultaLugar = (IQueryable<Lugar>)this.Context.Lugar;
+            consultaLugar = consultaLugar.OrderBy(l => l.Id).Where(lugar => lugar.Id == id);
+            return await consultaLugar.FirstOrDefaultAsync();
+        }
+
+        public async Task<Tipo[]> GetAllTipos()
+        {
+            IQueryable<Tipo> consultaTipos = (IQueryable<Tipo>)this.Context.Tipo;
+            consultaTipos = consultaTipos.OrderBy(t => t.Id);
+            return await consultaTipos.ToArrayAsync();
+        }
+
+        public async Task<Tipo> GetTipoById(int id)
+        {
+            IQueryable<Tipo> consultaTipo = (IQueryable<Tipo>)this.Context.Tipo;
+            consultaTipo = consultaTipo.OrderBy(t => t.Id).Where(tipo => tipo.Id == id);;
+            return await consultaTipo.FirstOrDefaultAsync();
         }
     }
 }

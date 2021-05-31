@@ -20,8 +20,8 @@
         "ProjetoPratica_API": {
             "commandName": "Project",
             "launchBrowser": true,
-            "launchUrl": "weatherforecast",
-            "applicationUrl": "https://192.168.15.155:5001;http://192.168.15.155:5000",
+            "launchUrl": "api/values",
+            "applicationUrl": "https://143.106.202.100:5001;http://143.106.202.100:5000",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
