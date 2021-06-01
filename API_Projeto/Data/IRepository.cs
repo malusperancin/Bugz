@@ -1,15 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ProjetoPratica_API.Models;
+using Bugz.Models;
 using System;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Cors;
-using ProjetoPratica_API.Data;
 
-namespace ProjetoPratica_API.Data
+namespace Bugz.Data
 {
     public interface IRepository
     {

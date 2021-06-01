@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
-using ProjetoPratica_API.Data;
-using ProjetoPratica_API.Models;
+using Bugz.Data;
+using Bugz.Models;
 
-
-namespace ProjetoPratica_API.Controllers
+namespace Bugz.Controllers
 {
     [EnableCors("*")]
     [Route("api/[controller]")]

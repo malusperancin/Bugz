@@ -1,11 +1,9 @@
-using System;
-
-namespace ProjetoPratica_API.Models
+namespace Bugz.Models
 {
     public class Funcionarios
     {
-
-        public Funcionarios(int id,string foto,string nome,string departamento,string apelido,string equipe){
+        public Funcionarios(int id,string foto,string nome,string departamento,string apelido,string equipe)
+        {
             Id = id;
             Foto = foto;
             Nome = nome;
@@ -14,15 +12,15 @@ namespace ProjetoPratica_API.Models
             Equipe = equipe;
         }
 
-        public Funcionarios(int id, string nome){
+        public Funcionarios(int id, string nome, string foto)
+        {
             Id = id;
             Nome = nome;
+            Foto = foto;
         }
 
         public Funcionarios(){}
 
-        // [Key]
-        //public Usuarios(int id, string nome, string apelido, string email, string celular, DateTime data, int foto)
         public int Id { get; set; }
         public string Foto { get; set; }
         public string Nome { get; set; }

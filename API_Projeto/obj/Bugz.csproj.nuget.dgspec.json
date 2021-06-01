@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\ProjetoPratica_API.csproj": {}
+    "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\ProjetoPratica_API.csproj": {
+    "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\ProjetoPratica_API.csproj",
-        "projectName": "ProjetoPratica_API",
-        "projectPath": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\ProjetoPratica_API.csproj",
+        "projectUniqueName": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj",
+        "projectName": "Bugz",
+        "projectPath": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj",
         "packagesPath": "C:\\Users\\Rodrigo\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\obj\\",
         "projectStyle": "PackageReference",

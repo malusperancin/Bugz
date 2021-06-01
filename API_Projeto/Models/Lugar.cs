@@ -1,4 +1,4 @@
-namespace  ProjetoPratica_API.Models
+namespace  Bugz.Models
 {
     public class Lugar
     {

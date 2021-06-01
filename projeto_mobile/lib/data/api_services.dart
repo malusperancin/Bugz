@@ -2,44 +2,37 @@ import 'package:http/http.dart' as http;
 import 'package:projeto_mobile/models/evento_model.dart';
 
 class APIServices {
-  static String getFuncionarios = 'http://192.168.1.120:5001/api/funcionarios';
-  static String getEquipes = 'http://192.168.1.120:5001/api/equipes';
-  static String getEventos = 'http://192.168.1.120:5001/api/eventos';
-  static String getLugares = 'http://192.168.1.120:5001/api/lugares';
-  static String getTipos = 'http://192.168.1.120:5001/api/tipos';
-  static String postEvento = 'http://192.168.1.120:5001/api/eventos';
-  static String putEvento = 'http://192.168.1.120:5001/api/eventos/';
-  static String deleteEvento = 'http://192.168.1.120:5001/api/eventos/';
+  static final String url = 'http://192.168.0.136:5001/api/';
 
   static Future buscarFuncionarios() async {
-    return await http.get(Uri.parse(getFuncionarios));
+    return await http.get(Uri.parse(url + 'funcionarios'));
   }
 
   static Future buscarEventos() async {
-    return await http.get(Uri.parse(getEventos));
+    return await http.get(Uri.parse(url + 'eventos'));
   }
 
   static Future buscarEquipes() async {
-    return await http.get(Uri.parse(getEquipes));
+    return await http.get(Uri.parse(url + 'equipes'));
   }
 
   static Future buscarLugares() async {
-    return await http.get(Uri.parse(getLugares));
+    return await http.get(Uri.parse(url + 'lugares'));
   }
 
   static Future buscarTipos() async {
-    return await http.get(Uri.parse(getTipos));
+    return await http.get(Uri.parse(url + 'tipos'));
   }
 
   static Future adicionarEvento(Evento evento) async {
-    return await http.post(Uri.parse(postEvento), body: evento);
+    return await http.post(Uri.parse(url + 'eventos'), body: evento);
   }
 
   static Future editarEvento(Evento evento) async {
-    return await http.put(Uri.parse(putEvento+evento.id.toString()), body: evento);
+    return await http.put(Uri.parse(url + 'eventos/'+evento.id.toString()), body: evento);
   }
 
   static Future deletarEvento(Evento evento) async {
-    return await http.put(Uri.parse(postEvento+evento.id.toString()));
+    return await http.put(Uri.parse(url + 'eventos/'+evento.id.toString()));
   }
 }

@@ -17,14 +17,14 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             }
         },
-        "ProjetoPratica_API": {
-            "commandName": "Project",
-            "launchBrowser": true,
-            "launchUrl": "api/values",
-            "applicationUrl": "https://192.168.1.120:5000;http://192.168.1.120:5001",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
+      "ProjetoPratica_API": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "launchUrl": "api",
+        "applicationUrl": "http://192.168.0.136:5000;http://192.168.0.136:5001",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
         }
+      }
     }
 }

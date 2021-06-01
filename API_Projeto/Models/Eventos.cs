@@ -1,11 +1,9 @@
-using System;
-
-namespace ProjetoPratica_API.Models
+namespace Bugz.Models
 {
     public class Eventos
     {
-
-        public Eventos(int id,string nome,string data,string lugar,string tipo,string responsavel, Funcionarios[] participantes ){
+        public Eventos(int id,string nome,string data,string lugar,string tipo,string responsavel, Funcionarios[] participantes)
+        {
             Id = id;
             Nome = nome;
             Data = data;
@@ -15,10 +13,7 @@ namespace ProjetoPratica_API.Models
             Participantes = participantes;
         }
 
-        public Eventos(){
-            
-        }
-
+        public Eventos(){}
 
         public int Id { get; set; }
         public string Nome { get; set; }

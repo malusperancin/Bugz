@@ -1,46 +1,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ProjetoPratica_API.Data;
 using Microsoft.EntityFrameworkCore;
-using ProjetoPratica_API.Models;
+using Bugz.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System;
 
-namespace ProjetoPratica_API.Data
+namespace Bugz.Data
 {
     public class Repository : IRepository
     {
-        public MoneyroContext Context { get; }
-        public Repository(MoneyroContext context)
+        public Context Context { get; }
+        public Repository(Context context)
         {
             this.Context = context;
         }
         public void Add<T>(T entity) where T : class
         {
-            //throw new System.NotImplementedException();
             this.Context.Add(entity);
         }
         public void Delete<T>(T entity) where T : class
         {
-            //throw new System.NotImplementedException();
             this.Context.Remove(entity);
         }
 
         public async Task<bool> SaveChangesAsync()
         {
-            // Como é tipo Task vai gerar thread, então vamos definir o método como assíncrono (async)
-            // Por ser assíncrono, o return deve esperar (await) se tem alguma coisa para salvar no BD
-            // Ainda verifica se fez alguma alteração no BD, se for maior que 0 retorna true ou false
             return (await this.Context.SaveChangesAsync() > 0);
         }
 
         public void Update<T>(T entity) where T : class
         {
-            //throw new System.NotImplementedException();
             this.Context.Update(entity);
         }
 
@@ -51,15 +42,12 @@ namespace ProjetoPratica_API.Data
 
         public async Task<Funcionarios[]> GetAllFuncionarios()
         {
-            //throw new System.NotImplementedException();
-            //Retornar para uma query qualquer do tipo Aluno
             IQueryable<Funcionarios> consultaUsuarios = (IQueryable<Funcionarios>)this.Context.Funcionarios;
             consultaUsuarios = consultaUsuarios.OrderByDescending(u => u.Id);
 
             return await consultaUsuarios.ToArrayAsync();
         }
 
-        // OK
         public Funcionarios GetFuncionarioById(int id)
         {
             List<Funcionarios> funcionarios = SpGetAllFuncionarios();
@@ -67,7 +55,6 @@ namespace ProjetoPratica_API.Data
             return result;
         }
 
-        // OK - ID DO RESPONSAVEL???
         public void SpAdicionarEvento(Eventos evento)
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -90,7 +77,6 @@ namespace ProjetoPratica_API.Data
             con.Close();
         }
 
-        // OK
         public List<Funcionarios> SpGetAllFuncionarios()    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -120,7 +106,6 @@ namespace ProjetoPratica_API.Data
             return result;
         }
 
-        // OK
         public List<Equipes> SpGetEquipes()    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -150,7 +135,6 @@ namespace ProjetoPratica_API.Data
             return result;
         }
 
-        // OK
         public List<Eventos> SpGetEventos()    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -184,7 +168,8 @@ namespace ProjetoPratica_API.Data
                 {
                     Funcionarios part = new Funcionarios(
                         (int)leitor["idParticipante"],
-                        (string)leitor["nomeParticipante"]
+                        (string)leitor["nomeParticipante"],
+                        (string)leitor["fotoParticipante"]
                     );
                     
                     participantes.Add(part);
@@ -209,7 +194,6 @@ namespace ProjetoPratica_API.Data
             return even;
         }
 
-        // NAO USAMOS MAIS
         public List<String> SpGetParticipantes(int idEvento)    
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -231,7 +215,6 @@ namespace ProjetoPratica_API.Data
             return part;
         }
 
-        // OK
         public Eventos GetEventoById(int idEvento)
         {
             List<Eventos> eventos = SpGetEventos();
@@ -239,7 +222,6 @@ namespace ProjetoPratica_API.Data
             return evento;
         }
 
-        // OK EU ACHO
         public void SpAtualizarEvento(Eventos evento, Eventos antigo)
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
@@ -247,19 +229,14 @@ namespace ProjetoPratica_API.Data
             
             SqlCommand cmd = new SqlCommand("comando", con);
 
-            // AS INFORMAÇÕES DO EVENTO
-
             cmd.CommandText = $"sp_updateEvento {evento.Id}, '{evento.Nome}', '{evento.Data}', '{evento.Lugar}', '{evento.Tipo}', {2}";
             cmd.ExecuteNonQuery();
-
-            // PARTICIPANTES
 
             cmd.CommandText = "";
 
             var novosPar = evento.Participantes.ToList<Funcionarios>();
             var antigosPar = antigo.Participantes.ToList<Funcionarios>();
 
-            // tira os iguais
             for(int i = 0; i < antigo.Participantes.Length; i++)
                 novosPar.Remove(novosPar.Find(p => p.Id == antigo.Participantes[i].Id));
 
@@ -277,8 +254,7 @@ namespace ProjetoPratica_API.Data
             cmd.ExecuteNonQuery();
             con.Close();
         }
-
-        // OK        
+      
         public void SpDeleterEvento(int id)
         {
             SqlConnection con = new SqlConnection(this.Context.Database.GetDbConnection().ConnectionString);
