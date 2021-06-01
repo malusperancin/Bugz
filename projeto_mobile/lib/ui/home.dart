@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_mobile/ui/departamentoequipes.dart';
+import 'package:projeto_mobile/ui/departamentoEquipes/departamentoEquipes.dart';
 import 'package:projeto_mobile/ui/evento/evento.dart';
-import 'package:projeto_mobile/ui/funcionarios.dart';
+import 'package:projeto_mobile/ui/funcionario/funcionarios.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);

@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_mobile/models/api_services.dart';
+import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/funcionario_model.dart';
-import 'package:projeto_mobile/nav/navbar.dart';
 
 class Funcionarios extends StatefulWidget {
   Funcionarios({Key key}) : super(key: key);
@@ -18,7 +17,7 @@ class _FuncionarioState extends State<Funcionarios> {
   getFuncionarios() {
     APIServices.buscarFuncionarios().then((response) {
       Iterable list = json.decode(response.body);
-      List<Funcionario> listaFuncionarios = List<Funcionario>();
+      List<Funcionario> listaFuncionarios = [];
       listaFuncionarios =
           list.map((model) => Funcionario.fromObject(model)).toList();
       setState(() {
@@ -28,8 +27,14 @@ class _FuncionarioState extends State<Funcionarios> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     getFuncionarios();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: _buildAppBar(),
         body: funcionarios == null

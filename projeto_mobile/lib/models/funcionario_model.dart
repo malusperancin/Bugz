@@ -5,7 +5,6 @@ class Funcionario {
   String _departamento;
   String _apelido;
   String _equipe;
-  bool isSelected = false;
 
   Funcionario(
       this._foto, this._nome, this._departamento, this._apelido, this._equipe);

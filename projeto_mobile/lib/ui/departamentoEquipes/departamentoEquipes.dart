@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_mobile/models/api_services.dart';
+import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/equipe_model.dart';
-import 'package:projeto_mobile/nav/navbar.dart';
 
 class DepEquipes extends StatefulWidget {
   DepEquipes({Key key}) : super(key: key);
@@ -15,10 +14,10 @@ class DepEquipes extends StatefulWidget {
 class _DepEquipeState extends State<DepEquipes> {
   List<Equipe> equipes;
 
-  getFuncionarios() {
+  getEquipes() {
     APIServices.buscarEquipes().then((response) {
       Iterable list = json.decode(response.body);
-      List<Equipe> listaEquipes = List<Equipe>();
+      List<Equipe> listaEquipes = [];
       listaEquipes = list.map((model) => Equipe.fromObject(model)).toList();
       setState(() {
         equipes = listaEquipes;
@@ -27,8 +26,14 @@ class _DepEquipeState extends State<DepEquipes> {
   }
 
   @override
+  void initState() {
+    getEquipes();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    getFuncionarios();
     return Scaffold(
       appBar: _buildAppBar(),
       body: equipes == null

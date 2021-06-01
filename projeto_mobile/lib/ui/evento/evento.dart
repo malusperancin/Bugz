@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projeto_mobile/models/api_services.dart';
+import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/evento_model.dart';
-import 'package:projeto_mobile/ui/evento/componentes/form_evento.dart';
+import 'package:projeto_mobile/ui/evento/form_evento.dart';
 
 class Eventos extends StatefulWidget {
   Eventos({Key key}) : super(key: key);
@@ -18,7 +18,7 @@ class _EventoState extends State<Eventos> {
   getEventos() {
     APIServices.buscarEventos().then((response) {
       Iterable list = json.decode(response.body);
-      List<Evento> listaEventos = List<Evento>();
+      List<Evento> listaEventos = [];
       listaEventos = list.map((model) => Evento.fromObject(model)).toList();
       setState(() {
         eventos = listaEventos;
@@ -27,10 +27,16 @@ class _EventoState extends State<Eventos> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     getEventos();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+      body: Container(
       margin: EdgeInsets.fromLTRB(10.0, 35.0, 10.0, 0),
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -123,9 +129,7 @@ class _EventoState extends State<Eventos> {
                       Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            for (int i;
-                                i < eventos[index].participantes.length;
-                                i++)
+                            for (int i = 0;i < eventos[index].participantes.length; i++)
                               Text(
                                 eventos[index].participantes[i].nome,
                                 style: TextStyle(
