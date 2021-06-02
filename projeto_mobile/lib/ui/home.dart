@@ -12,13 +12,22 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomeScreen> {
-  final List<Widget> _children = [Funcionarios(), DepEquipes(), Eventos()];
+  List<Widget> _children = [new Funcionarios(), new DepEquipes(), new Eventos()];
 
   int _selectedPage = 0;
 
+  Future<void> createInstances() async{
+    setState(() {
+      _children = [new Funcionarios(), new DepEquipes(), new Eventos()];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return RefreshIndicator(
+        onRefresh: createInstances,
+        child: Scaffold(
         body: IndexedStack(
           index: _selectedPage,
           children: _children,
@@ -109,6 +118,6 @@ class _HomePageState extends State<HomeScreen> {
               ],
             ),
           ),
-        ));
+        )));
   }
 }

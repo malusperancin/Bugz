@@ -143,7 +143,6 @@ class _EventoState extends State<Eventos> {
           GestureDetector(
               child: Text("Ver menos", textAlign: TextAlign.center),
               onTap: () => setState(() {
-                    verMais = !verMais;
                     indexExpandido = index;
                   }))
         ]);
