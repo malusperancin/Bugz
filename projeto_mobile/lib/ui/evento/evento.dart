@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/evento_model.dart';
-import 'package:projeto_mobile/ui/evento/edit_evento.dart';
 import 'package:projeto_mobile/ui/evento/form_evento.dart';
 
 class Eventos extends StatefulWidget {
@@ -17,6 +16,8 @@ class _EventoState extends State<Eventos> {
   List<Evento> eventos;
   bool verMais = false;
   int indexExpandido = -1;
+  Evento evento;
+  bool estaEditando = false;
 
   getEventos() {
     APIServices.buscarEventos().then((response) {
@@ -65,10 +66,10 @@ class _EventoState extends State<Eventos> {
             children: [
               eventos == null
                   ? Center(
-                      child: Text('Vazio'),
+                      child: Text('Não há nada por aqui...'),
                     )
                   : listaEventos(),
-              FormEvento()
+              FormEvento(estaEditando: estaEditando, evento: evento)
             ],
           ),
         ),
@@ -160,10 +161,10 @@ class _EventoState extends State<Eventos> {
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
             child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditEvento(index: index)));
+                  setState(() {
+                    estaEditando = true;
+                    evento = eventos[index];
+                  });
                 }(),
                 child: Container(
                   color: Colors.red,

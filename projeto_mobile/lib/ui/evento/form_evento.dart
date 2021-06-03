@@ -8,10 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/lugar_model.dart';
 import 'package:projeto_mobile/models/tipo_model.dart';
-import 'package:projeto_mobile/ui/funcionario/funcionarios.dart';
 
 class FormEvento extends StatefulWidget {
-  FormEvento({Key key}) : super(key: key);
+  FormEvento({Key key, this.evento, this.estaEditando}) : super(key: key);
+
+  Evento evento;
+  bool estaEditando;
 
   @override
   _FormEventoState createState() => _FormEventoState();
@@ -30,72 +32,16 @@ class _FormEventoState extends State<FormEvento> {
   final _dataController = TextEditingController();
   final _responsavelController = TextEditingController();
 
-  addEvento() {
-    APIServices.adicionarEvento(new Evento(0, _nomeController.text, _dataController.text, lugar, tipo, _responsavelController.text, convidados)).then((response) {
-    });
-  }
-
-  getLocais() {
-    APIServices.buscarLugares().then((response) {
-      Iterable list = json.decode(response.body);
-      List<Lugar> listaLugar = [];
-      listaLugar = list.map((model) => Lugar.fromObject(model)).toList();
-      setState(() {
-        lugares = listaLugar;
-        lugar = listaLugar[0].nome;
-      });
-    });
-  }
-
-  getTipos() {
-    APIServices.buscarTipos().then((response) {
-      Iterable list = json.decode(response.body);
-      List<Tipo> listaTipo = [];
-      listaTipo = list.map((model) => Tipo.fromObject(model)).toList();
-      setState(() {
-        tipos = listaTipo;
-        tipo = listaTipo[0].nome;
-      });
-    });
-  }
-
-  getFuncionarios() {
-    APIServices.buscarFuncionarios().then((response) {
-      Iterable list = json.decode(response.body);
-      List<Funcionario> listaFuncionarios = [];
-      listaFuncionarios =
-          list.map((model) => Funcionario.fromObject(model)).toList();
-      setState(() {
-        funcionarios = listaFuncionarios;
-      });
-    });
-  }
-
   @override
   void initState() {
     getLocais();
     getTipos();
     getFuncionarios();
 
+    if (widget.estaEditando)
+      _nomeController.text = widget.evento.nome;
+
     super.initState();
-  }
-
-  List<DropdownMenuItem<String>> setItensLugares() {
-    return lugares
-        .map((e) => DropdownMenuItem(value: e.nome, child: Text(e.nome)))
-        .toList();
-  }
-
-  List<DropdownMenuItem<String>> setItensTipos() {
-    return tipos
-        .map((e) => DropdownMenuItem(value: e.nome, child: Text(e.nome)))
-        .toList();
-  }
-
-  List<MultiSelectItem<Funcionario>> setItensFuncionarios() {
-    return funcionarios
-        .map((e) => MultiSelectItem(e, e.nome + "  " + e.equipe))
-        .toList();
   }
 
   @override
@@ -159,11 +105,84 @@ class _FormEventoState extends State<FormEvento> {
                 onPressed: () {
                   addEvento();
                 },
-                child: Text("Criar evento",
+                child: Text(getBtnText(),
                     style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
             ))
       ])),
     )));
+  }
+
+  String getBtnText() {
+    if (widget.estaEditando)
+      return "Editar evento";
+    else
+      return "Criar evento";
+  }
+
+  addEvento() {
+    APIServices.adicionarEvento(new Evento(
+            0,
+            _nomeController.text,
+            _dataController.text,
+            lugar,
+            tipo,
+            _responsavelController.text,
+            convidados))
+        .then((response) {});
+  }
+
+  getLocais() {
+    APIServices.buscarLugares().then((response) {
+      Iterable list = json.decode(response.body);
+      List<Lugar> listaLugar = [];
+      listaLugar = list.map((model) => Lugar.fromObject(model)).toList();
+      setState(() {
+        lugares = listaLugar;
+        lugar = listaLugar[0].nome;
+      });
+    });
+  }
+
+  getTipos() {
+    APIServices.buscarTipos().then((response) {
+      Iterable list = json.decode(response.body);
+      List<Tipo> listaTipo = [];
+      listaTipo = list.map((model) => Tipo.fromObject(model)).toList();
+      setState(() {
+        tipos = listaTipo;
+        tipo = listaTipo[0].nome;
+      });
+    });
+  }
+
+  getFuncionarios() {
+    APIServices.buscarFuncionarios().then((response) {
+      Iterable list = json.decode(response.body);
+      List<Funcionario> listaFuncionarios = [];
+      listaFuncionarios =
+          list.map((model) => Funcionario.fromObject(model)).toList();
+      setState(() {
+        funcionarios = listaFuncionarios;
+      });
+    });
+  }
+
+  List<DropdownMenuItem<String>> setItensLugares() {
+    return lugares
+        .map((e) => DropdownMenuItem(value: e.nome, child: Text(e.nome)))
+        .toList();
+  }
+
+  List<DropdownMenuItem<String>> setItensTipos() {
+    return tipos
+        .map((e) => DropdownMenuItem(value: e.nome, child: Text(e.nome)))
+        .toList();
+  }
+
+  List<MultiSelectItem<Funcionario>> setItensFuncionarios() {
+    return funcionarios
+        .map((e) => MultiSelectItem(e, e.nome + "  " + e.equipe))
+        .toList();
   }
 }
