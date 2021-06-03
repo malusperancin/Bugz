@@ -12,11 +12,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomeScreen> {
-  List<Widget> _children = [new Funcionarios(), new DepEquipes(), new Eventos()];
+  List<Widget> _children = [
+    new Funcionarios(),
+    new DepEquipes(),
+    new Eventos()
+  ];
 
   int _selectedPage = 0;
 
-  Future<void> createInstances() async{
+  Future<void> createInstances() async {
     setState(() {
       _children = [new Funcionarios(), new DepEquipes(), new Eventos()];
     });
@@ -24,100 +28,73 @@ class _HomePageState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return RefreshIndicator(
         onRefresh: createInstances,
         child: Scaffold(
-        body: IndexedStack(
-          index: _selectedPage,
-          children: _children,
-        ),
-        bottomNavigationBar: BottomAppBar(
-          elevation: 0.0,
-          child: Container(
-            margin: EdgeInsets.all(10.0),
-            height: 95,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                color: Colors.grey[600]),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                MaterialButton(
-                  minWidth: 40,
-                  onPressed: () {
-                    setState(() {
-                      _selectedPage = 0;
-                    });
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.account_circle_rounded,
-                          color: _selectedPage == 0
-                              ? Colors.white
-                              : Colors.white38),
-                      Text(
-                        "Funcionários",
-                        style: TextStyle(
-                            color: _selectedPage == 0
-                                ? Colors.white
-                                : Colors.white38),
-                      )
-                    ],
-                  ),
-                ),
-                MaterialButton(
-                  minWidth: 40,
-                  onPressed: () {
-                    setState(() {
-                      _selectedPage = 1;
-                    });
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.wc_rounded,
-                          color: _selectedPage == 1
-                              ? Colors.white
-                              : Colors.white38),
-                      Text(
-                        "Times e Depart.",
-                        style: TextStyle(
-                            color: _selectedPage == 1
-                                ? Colors.white
-                                : Colors.white38),
-                      )
-                    ],
-                  ),
-                ),
-                MaterialButton(
-                  minWidth: 40,
-                  onPressed: () {
-                    setState(() {
-                      _selectedPage = 2;
-                    });
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.event_available,
-                          color: _selectedPage == 2
-                              ? Colors.white
-                              : Colors.white38),
-                      Text(
-                        "Eventos",
-                        style: TextStyle(
-                            color: _selectedPage == 2
-                                ? Colors.white
-                                : Colors.white38),
-                      )
-                    ],
-                  ),
-                ),
-              ],
+            body: IndexedStack(
+              index: _selectedPage,
+              children: _children,
             ),
-          ),
-        )));
+            bottomNavigationBar: BottomAppBar(
+              elevation: 0.0,
+              child: Container(
+                height: 50,
+                decoration:
+                    BoxDecoration(color: Color.fromRGBO(255, 75, 92, 1)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    MaterialButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedPage = 0;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.account_circle_rounded,
+                              color: _selectedPage == 0
+                                  ? Colors.white
+                                  : Colors.white38)
+                        ],
+                      ),
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedPage = 1;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.wc_rounded,
+                              color: _selectedPage == 1
+                                  ? Colors.white
+                                  : Colors.white38)
+                        ],
+                      ),
+                    ),
+                    MaterialButton(
+                      onPressed: () {
+                        setState(() {
+                          _selectedPage = 2;
+                        });
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.event_available,
+                              color: _selectedPage == 2
+                                  ? Colors.white
+                                  : Colors.white38)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )));
   }
 }

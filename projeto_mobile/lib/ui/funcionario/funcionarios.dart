@@ -36,71 +36,76 @@ class _FuncionarioState extends State<Funcionarios> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _buildAppBar(),
         body: funcionarios == null
             ? Center(
-                child: Text('Vazio'),
+                child: Text('Não há nada por aqui...'),
               )
             : listaFuncionarios());
   }
 
-  Widget _buildAppBar() {
-    return AppBar(title: Text('Lista de Funcionarios'));
-  }
-
   Widget listaFuncionarios() {
-    return ListView.builder(
-      itemCount: funcionarios.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Card(
-            color: Colors.white10,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Container(
-                        width: 50.0,
-                        height: 50.0,
-                        decoration: new BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage("assets/images/" +
-                                    funcionarios[index].foto)))),
+    return Container(
+        color: Colors.white,
+        child: Padding(
+            padding: EdgeInsets.only(top: 20),
+            child: ListView.builder(
+              itemCount: funcionarios.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Container(
+                    color: Colors.grey[300],
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Container(
+                                width: 50.0,
+                                height: 50.0,
+                                decoration: new BoxDecoration(
+                                    image: new DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage("assets/images/" +
+                                            funcionarios[index].foto)))),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                funcionarios[index].nome,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Roboto",
+                                    fontSize: 20),
+                              ),
+                              Text(
+                                funcionarios[index].apelido,
+                                style: TextStyle(
+                                    color: Colors.black45,
+                                    fontFamily: "Roboto",
+                                    fontSize: 15),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text(
+                                  funcionarios[index].departamento,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Roboto",
+                                      fontSize: 17),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        funcionarios[index].nome,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Text(
-                        funcionarios[index].apelido,
-                        style: TextStyle(color: Colors.black45, fontSize: 15),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          funcionarios[index].departamento,
-                          style: TextStyle(color: Colors.black, fontSize: 17),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+                );
+              },
+            )));
   }
 }

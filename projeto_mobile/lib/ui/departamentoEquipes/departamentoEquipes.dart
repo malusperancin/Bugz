@@ -35,17 +35,12 @@ class _DepEquipeState extends State<DepEquipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
       body: equipes == null
           ? Center(
-              child: Text('Vazio'),
+              child: Text('Não há nada por aqui...'),
             )
           : listaEquipes(),
     );
-  }
-
-  Widget _buildAppBar() {
-    return AppBar(title: Text('Lista de Equipes Departamento'));
   }
 
   Widget listaEquipes() {

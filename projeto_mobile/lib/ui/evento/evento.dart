@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/evento_model.dart';
+import 'package:projeto_mobile/ui/evento/edit_evento.dart';
 import 'package:projeto_mobile/ui/evento/form_evento.dart';
 
 class Eventos extends StatefulWidget {
@@ -76,7 +77,7 @@ class _EventoState extends State<Eventos> {
   }
 
   Widget getWidget(int index) {
-    if (!verMais )
+    if (!verMais)
       return verMaisWidget(index);
     else if (index == indexExpandido) {
       indexExpandido = -1;
@@ -100,13 +101,13 @@ class _EventoState extends State<Eventos> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           for (int i = 0; i < eventos[index].participantes.length; i++)
-                    Padding(
-                    padding: const EdgeInsets.all(0),
-                child: Card(
-                  color: Colors.white10,
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Row(
+            Padding(
+              padding: const EdgeInsets.all(0),
+              child: Card(
+                color: Colors.white10,
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Row(
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(5.0),
@@ -118,9 +119,13 @@ class _EventoState extends State<Eventos> {
                                 image: new DecorationImage(
                                     fit: BoxFit.cover,
                                     image: AssetImage("assets/images/" +
-                                        eventos[index].participantes[i].foto)))),
+                                        eventos[index]
+                                            .participantes[i]
+                                            .foto)))),
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -138,7 +143,6 @@ class _EventoState extends State<Eventos> {
                 ),
               ),
             ),
-
           SizedBox(height: 10),
           GestureDetector(
               child: Text("Ver menos", textAlign: TextAlign.center),
@@ -154,75 +158,78 @@ class _EventoState extends State<Eventos> {
       itemBuilder: (context, index) {
         return Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.white70, width: 1),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              color: Colors.white10,
-              child: Container(
-                width: double.infinity,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18),
-                  child: Wrap(
-                    children: <Widget>[
-                      Column(children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    eventos[index].nome,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    eventos[index].tipo,
-                                    style: TextStyle(
-                                        color: Colors.black87,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 20),
-                                  ),
-                                ]),
-                            Text(
-                              "Por: " + eventos[index].responsavel,
-                              style: TextStyle(
-                                  color: Colors.black45, fontSize: 15),
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditEvento(index: index)));
+                }(),
+                child: Container(
+                  color: Colors.red,
+                  child: Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 18),
+                      child: Wrap(
+                        children: <Widget>[
+                          Column(children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        eventos[index].nome,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 24),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        eventos[index].tipo,
+                                        style: TextStyle(
+                                            color: Colors.black87,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 20),
+                                      ),
+                                    ]),
+                                Text(
+                                  "Por: " + eventos[index].responsavel,
+                                  style: TextStyle(
+                                      color: Colors.black45, fontSize: 15),
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        "Data: " + eventos[index].data,
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 15),
+                                      ),
+                                      SizedBox(width: 10),
+                                      Text(
+                                        "Local: " + eventos[index].lugar,
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 15),
+                                      ),
+                                    ]),
+                              ],
                             ),
                             SizedBox(height: 10),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Data: " + eventos[index].data,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    "Local: " + eventos[index].lugar,
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  ),
-                                ]),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Container(child: Center(child: getWidget(index))),
-                      ])
-                    ],
+                            Container(child: Center(child: getWidget(index))),
+                          ])
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ));
+                )));
       },
     );
   }

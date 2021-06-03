@@ -8,16 +8,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/lugar_model.dart';
 import 'package:projeto_mobile/models/tipo_model.dart';
-import 'package:projeto_mobile/ui/funcionario/funcionarios.dart';
 
-class FormEvento extends StatefulWidget {
-  FormEvento({Key key}) : super(key: key);
+class EditEvento extends StatefulWidget {
+  EditEvento({Key key, this.index}) : super(key: key);
 
+  final int index;
   @override
-  _FormEventoState createState() => _FormEventoState();
+  _EditEventoState createState() => _EditEventoState();
 }
 
-class _FormEventoState extends State<FormEvento> {
+class _EditEventoState extends State<EditEvento> {
   List<Lugar> lugares;
   List<Tipo> tipos;
   List<Funcionario> funcionarios;
@@ -30,8 +30,26 @@ class _FormEventoState extends State<FormEvento> {
   final _dataController = TextEditingController();
   final _responsavelController = TextEditingController();
 
-  addEvento() {
-    APIServices.adicionarEvento(new Evento(0, _nomeController.text, _dataController.text, lugar, tipo, _responsavelController.text, convidados)).then((response) {
+  editarEvento() {
+    APIServices.editarEvento(new Evento(
+            0,
+            _nomeController.text,
+            _dataController.text,
+            lugar,
+            tipo,
+            _responsavelController.text,
+            convidados))
+        .then((response) {});
+  }
+
+  getEvento(int id) {
+    APIServices.buscarEventoPorId(widget.index).then((response) {
+      Iterable list = json.decode(response.body);
+      List<Evento> listaEvento = [];
+      listaEvento = list.map((model) => Evento.fromObject(model)).toList();
+      setState(() {
+        evento = listaEvento[0];
+      });
     });
   }
 
@@ -157,7 +175,7 @@ class _FormEventoState extends State<FormEvento> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  addEvento();
+                  editarEvento();
                 },
                 child: Text("Criar evento",
                     style: TextStyle(color: Colors.white, fontSize: 16)),

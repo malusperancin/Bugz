@@ -8,7 +8,6 @@ class Equipe {
 
   Equipe(this._id, this._nome, this._departamento, this._funcionarios);
 
-
   int get  id=>_id;
   String get nome => _nome;
   String get departamento => _departamento;
