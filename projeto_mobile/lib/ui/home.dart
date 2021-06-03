@@ -40,7 +40,7 @@ class _HomePageState extends State<HomeScreen> {
               child: Container(
                 height: 50,
                 decoration:
-                    BoxDecoration(color: Color.fromRGBO(255, 75, 92, 1)),
+                    BoxDecoration(color: Color.fromRGBO(3, 37, 80, 1)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
@@ -96,5 +96,11 @@ class _HomePageState extends State<HomeScreen> {
                 ),
               ),
             )));
+  }
+
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return false;
   }
 }

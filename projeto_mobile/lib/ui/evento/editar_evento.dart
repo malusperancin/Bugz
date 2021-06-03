@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/lugar_model.dart';
 import 'package:projeto_mobile/models/tipo_model.dart';
+import 'package:intl/intl.dart';
 
 class EditarEvento extends StatefulWidget {
   EditarEvento(
@@ -31,6 +32,27 @@ class _EditarEventoState extends State<EditarEvento> {
   final _dataController = TextEditingController();
   final _responsavelController = TextEditingController();
 
+  var dateFormatted = '';
+
+  DateTime selectedDate;
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2022, 12));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        var date =
+            "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+        dateFormatted =
+            '${picked.toLocal().year}-${picked.toLocal().month}-${picked.toLocal().day}';
+        _dataController.text = date;
+      });
+  }
+
   editarEvento() {
     evento.nome = _nomeController.text;
     evento.responsavel = responsavel.id.toString();
@@ -41,6 +63,8 @@ class _EditarEventoState extends State<EditarEvento> {
   @override
   void initState() {
     evento = widget.evento;
+    var inputFormat = DateFormat("dd/MM/yyyy");
+    var data = inputFormat.parse(evento.data);
     responsavel = widget.funcionarios[0];
     _nomeController.text = evento.nome;
     _dataController.text = evento.data;
@@ -56,65 +80,116 @@ class _EditarEventoState extends State<EditarEvento> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Padding(
-      padding: EdgeInsets.all(10),
-      child: Form(
-          child: Column(children: <Widget>[
-        TextFormField(
-            controller: _nomeController,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(labelText: "Nome")),
-        TextFormField(
-            controller: _dataController,
-            keyboardType: TextInputType.datetime,
-            decoration: InputDecoration(labelText: "Data")),
-        DropdownButton<String>(
-            value: evento.lugar,
-            icon: const Icon(Icons.location_on),
-            onChanged: (String lugarSelecionado) {
-              setState(() {
-                evento.lugar = lugarSelecionado;
-              });
-            },
-            items: setItensLugares()),
-        DropdownButton<String>(
-            value: evento.tipo,
-            onChanged: (String tipoSelecionado) {
-              setState(() {
-                evento.tipo = tipoSelecionado;
-              });
-            },
-            items: setItensTipos()),
-        DropdownButton<Funcionario>(
-            value: responsavel,
-            onChanged: (Funcionario responsavelSelecionado) {
-              setState(() {
-                responsavel = responsavelSelecionado;
-              });
-            },
-            items: setItensResponsavel()),
-        Container(
-          child: MultiSelectDialogField(
-            initialValue: convidados,
-            items: setItensFuncionarios(),
-            buttonText: Text("Participantes"),
-            cancelText: Text("Fechar"),
-            confirmText: Text("Feito"),
-            title: Text("Participantes"),
-            selectedColor: Colors.orange[500],
-            unselectedColor: Colors.orange[100],
-            listType: MultiSelectListType.CHIP,
-            onConfirm: (values) {
-              convidados = values;
-              evento.participantes = convidados;
-            },
-            searchable: true,
-          ),
-        ),
-        Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 20),
-            child: Container(
+        resizeToAvoidBottomInset: false,
+        body: Stack(children: [
+          SingleChildScrollView(
+              child: Padding(
+            padding: EdgeInsets.fromLTRB(25, 60, 25, 10),
+            child: Form(
+                child: Column(children: <Widget>[
+              TextFormField(
+                  controller: _nomeController,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Nome",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              TextFormField(
+                  controller: _dataController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        icon: Icon(
+                          Icons.calendar_today_outlined,
+                        ),
+                        onPressed: () {
+                          _selectDate(context);
+                        }),
+                    labelText: "Data",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              DropdownButtonFormField<String>(
+                  value: evento.lugar,
+                  icon: const Icon(Icons.location_on),
+                  onChanged: (String lugarSelecionado) {
+                    setState(() {
+                      evento.lugar = lugarSelecionado;
+                    });
+                  },
+                  items: setItensLugares(),
+                  decoration: InputDecoration(
+                    labelText: "Lugar",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              DropdownButtonFormField<String>(
+                  value: evento.tipo,
+                  onChanged: (String tipoSelecionado) {
+                    setState(() {
+                      evento.tipo = tipoSelecionado;
+                    });
+                  },
+                  items: setItensTipos(),
+                  decoration: InputDecoration(
+                    labelText: "Tipo",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              DropdownButtonFormField<Funcionario>(
+                  value: responsavel,
+                  onChanged: (Funcionario responsavelSelecionado) {
+                    setState(() {
+                      responsavel = responsavelSelecionado;
+                    });
+                  },
+                  items: setItensResponsavel(),
+                  decoration: InputDecoration(
+                    labelText: "Responsável",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              Container(
+                child: MultiSelectDialogField(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey[300],
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  items: setItensFuncionarios(),
+                  buttonText: Text("Participantes"),
+                  cancelText: Text("Fechar"),
+                  confirmText: Text("Feito"),
+                  title: Text("Participantes"),
+                  selectedColor: Color.fromRGBO(3, 37, 80, 1),
+                  unselectedColor: Color.fromRGBO(23, 104, 172, 1),
+                  itemsTextStyle: TextStyle(color: Colors.white),
+                  selectedItemsTextStyle: TextStyle(color: Colors.white),
+                  listType: MultiSelectListType.CHIP,
+                  onConfirm: (values) {
+                    convidados = values;
+                  },
+                  searchable: true,
+                ),
+              )
+            ])),
+          )),
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 40, left: 80, right: 80),
               height: 40,
               width: double.infinity,
               child: ElevatedButton(
@@ -124,9 +199,9 @@ class _EditarEventoState extends State<EditarEvento> {
                 child: Text("Editar evento",
                     style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
-            ))
-      ])),
-    )));
+            )
+          ])
+        ]));
   }
 
   List<DropdownMenuItem<String>> setItensLugares() {

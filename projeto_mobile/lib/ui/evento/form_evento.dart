@@ -27,6 +27,26 @@ class _FormEventoState extends State<FormEvento> {
 
   final _nomeController = TextEditingController();
   final _dataController = TextEditingController();
+  var dateFormatted = '';
+
+  DateTime selectedDate = DateTime.now();
+
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2022,12));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+        var date =
+            "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+        dateFormatted =
+        '${picked.toLocal().year}-${picked.toLocal().month}-${picked.toLocal().day}';
+        _dataController.text = date;
+      });
+  }
 
   @override
   void initState() {
@@ -40,75 +60,130 @@ class _FormEventoState extends State<FormEvento> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-            child: Padding(
-      padding: EdgeInsets.all(10),
-      child: Form(
-          child: Column(children: <Widget>[
-        TextFormField(
-            controller: _nomeController,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(labelText: "Nome")),
-        TextFormField(
-            controller: _dataController,
-            keyboardType: TextInputType.datetime,
-            decoration: InputDecoration(labelText: "Data")),
-        DropdownButton<String>(
-            value: evento.lugar,
-            icon: const Icon(Icons.location_on),
-            onChanged: (String lugarSelecionado) {
-              setState(() {
-                evento.lugar = lugarSelecionado;
-              });
-            },
-            items: setItensLugares()),
-        DropdownButton<String>(
-            value: evento.tipo,
-            onChanged: (String tipoSelecionado) {
-              setState(() {
-                evento.tipo = tipoSelecionado;
-              });
-            },
-            items: setItensTipos()),
-        DropdownButton<Funcionario>(
-            value: responsavel,
-            onChanged: (Funcionario responsavelSelecionado) {
-              setState(() {
-                responsavel = responsavelSelecionado;
-              });
-            },
-            items: setItensResponsavel()),
-        Container(
-          child: MultiSelectDialogField(
-            items: setItensFuncionarios(),
-            buttonText: Text("Participantes"),
-            cancelText: Text("Fechar"),
-            confirmText: Text("Feito"),
-            title: Text("Participantes"),
-            selectedColor: Colors.orange[500],
-            unselectedColor: Colors.orange[100],
-            listType: MultiSelectListType.CHIP,
-            onConfirm: (values) {
-              convidados = values;
-            },
-            searchable: true,
-          ),
-        ),
-        Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 20),
-            child: Container(
-              height: 40,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  addEvento();
-                },
-                child: Text("Criar evento",
-                    style: TextStyle(color: Colors.white, fontSize: 16)),
+        resizeToAvoidBottomInset: false,
+        body: Stack(children: [
+      SingleChildScrollView(
+          child: Padding(
+        padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+        child: Form(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+              TextFormField(
+                  controller: _nomeController,
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                    labelText: "Nome",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              TextFormField(
+                  controller: _dataController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        icon: Icon(
+                          Icons.calendar_today_outlined,
+                        ),
+                        onPressed: () {
+                          _selectDate(context);
+                        }),
+                    labelText: "Data",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              DropdownButtonFormField<String>(
+                  value: evento.lugar,
+                  icon: const Icon(Icons.location_on),
+                  onChanged: (String lugarSelecionado) {
+                    setState(() {
+                      evento.lugar = lugarSelecionado;
+                    });
+                  },
+                  items: setItensLugares(),
+                  decoration: InputDecoration(
+                    labelText: "Lugar",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              DropdownButtonFormField<String>(
+                  value: evento.tipo,
+                  onChanged: (String tipoSelecionado) {
+                    setState(() {
+                      evento.tipo = tipoSelecionado;
+                    });
+                  },
+                  items: setItensTipos(),
+                  decoration: InputDecoration(
+                    labelText: "Tipo",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              DropdownButtonFormField<Funcionario>(
+                  value: responsavel,
+                  onChanged: (Funcionario responsavelSelecionado) {
+                    setState(() {
+                      responsavel = responsavelSelecionado;
+                    });
+                  },
+                  items: setItensResponsavel(),
+                  decoration: InputDecoration(
+                    labelText: "Responsável",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  )),
+              SizedBox(height: 15),
+              Container(
+                child: MultiSelectDialogField(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey[300],
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  items: setItensFuncionarios(),
+                  buttonText: Text("Participantes"),
+                  cancelText: Text("Fechar"),
+                  confirmText: Text("Feito"),
+                  title: Text("Participantes"),
+                  selectedColor: Color.fromRGBO(3, 37, 80, 1),
+                  unselectedColor: Color.fromRGBO(23, 104, 172, 1),
+                  itemsTextStyle: TextStyle(color: Colors.white),
+                  selectedItemsTextStyle: TextStyle(color: Colors.white),
+                  listType: MultiSelectListType.CHIP,
+                  onConfirm: (values) {
+                    convidados = values;
+                  },
+                  searchable: true,
+                ),
               ),
-            ))
-      ])),
-    )));
+            ])),
+      )),
+      Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 40, left: 80, right: 80),
+          height: 40,
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              addEvento();
+            },
+            child: Text("Criar evento",
+                style: TextStyle(color: Colors.white, fontSize: 16)),
+          ),
+        )
+      ])
+    ]));
   }
 
   addEvento() {
@@ -120,7 +195,15 @@ class _FormEventoState extends State<FormEvento> {
             evento.tipo,
             responsavel.id.toString(),
             convidados))
-        .then((response) {});
+        .then((response) {
+      DefaultTabController.of(context).animateTo(0);
+      _nomeController.text = "";
+      selectedDate = DateTime.now();
+      evento.lugar = widget.lugares[0].nome;
+      evento.tipo = widget.tipos[0].nome;
+      responsavel = widget.funcionarios[0];
+      convidados = new List<Funcionario>();
+    });
   }
 
   List<DropdownMenuItem<String>> setItensLugares() {

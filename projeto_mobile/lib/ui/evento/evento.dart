@@ -94,7 +94,6 @@ class _EventoState extends State<Eventos> {
 
   @override
   void initState() {
-    getEventos();
     getFuncionarios();
     getLocais();
     getTipos();
@@ -104,41 +103,47 @@ class _EventoState extends State<Eventos> {
 
   @override
   Widget build(BuildContext context) {
+    getEventos();
     return Scaffold(
-        body: Container(
-      margin: EdgeInsets.fromLTRB(10.0, 35.0, 10.0, 0),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(25.0)),
-        color: Colors.red[600],
-      ),
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: TabBar(
-            labelColor: Colors.redAccent,
-            unselectedLabelColor: Colors.grey[600],
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicator: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
-                color: Colors.white),
-            tabs: [Tab(text: "Consultar"), Tab(text: "Adicionar")],
-          ),
-          body: TabBarView(
-            children: [
-              eventos == null
-                  ? Center(child: Text('Não há nada por aqui...'))
-                  : listaEventos(),
-              FormEvento(
-                  lugares: lugares, tipos: tipos, funcionarios: funcionarios)
-            ],
-          ),
-        ),
-      ),
-    ));
+        resizeToAvoidBottomInset: false,
+        body: Stack(children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 35.0, 0, 0),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(0, 0, 0, 0),
+            ),
+            child: DefaultTabController(
+              length: 2,
+              child: Scaffold(
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+                appBar: TabBar(
+                  labelColor: Color.fromRGBO(0, 0, 0, 1),
+                  unselectedLabelColor: Colors.grey[600],
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicator: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      color: Color.fromRGBO(0, 0, 0, 0)),
+                  tabs: [Tab(text: "Consultar"), Tab(text: "Adicionar")],
+                ),
+                body: TabBarView(
+                  children: [
+                    eventos == null
+                        ? Center(child: Text('Não há nada por aqui...'))
+                        : listaEventos(),
+                    FormEvento(
+                        lugares: lugares,
+                        tipos: tipos,
+                        funcionarios: funcionarios)
+                  ],
+                ),
+              ),
+            ),
+          )
+        ]));
   }
 
   Widget getWidget(int index) {
@@ -224,62 +229,18 @@ class _EventoState extends State<Eventos> {
         return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 0),
             child: Container(
-              color: Colors.blue[100],
+              color: Colors.grey[200],
               child: Container(
                 width: double.infinity,
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 18.0),
+                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 18.0),
                   child: Wrap(
                     children: <Widget>[
                       Column(children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  ClipOval(
-                                    child: Material(
-                                      color: Colors.blue[200], // button color
-                                      child: InkWell(
-                                        splashColor:
-                                            Colors.blue[400], // inkwell color
-                                        child: SizedBox(
-                                            width: 40,
-                                            height: 40,
-                                            child: Icon(Icons.edit)),
-                                        onTap: () {
-                                          telaEditar(context, index);
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                  ClipOval(
-                                    child: Material(
-                                      color: Colors.blue[200], // button color
-                                      child: InkWell(
-                                        splashColor:
-                                            Colors.red[400], // inkwell color
-                                        child: SizedBox(
-                                            width: 40,
-                                            height: 40,
-                                            child: Icon(Icons.delete_forever)),
-                                        onTap: () async {
-                                          if (await confirm(context,
-                                              title: Text("Deletar"),
-                                              textOK: Text("Sim"),
-                                              textCancel: Text("Não"),
-                                              content: Text("Deletar '" +
-                                                  eventos[index].nome +
-                                                  "' para sempre?")))
-                                            deletarEvento(eventos[index]);
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                ]),
                             Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -300,6 +261,7 @@ class _EventoState extends State<Eventos> {
                                         fontSize: 20),
                                   ),
                                 ]),
+                            SizedBox(height: 6),
                             Text(
                               "Por: " + eventos[index].responsavel,
                               style: TextStyle(
@@ -324,7 +286,56 @@ class _EventoState extends State<Eventos> {
                                 ]),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: 20),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              ClipOval(
+                                child: Material(
+                                  color: Colors.grey[400], // button color
+                                  child: InkWell(
+                                    splashColor:
+                                        Colors.grey[400], // inkwell color
+                                    child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      telaEditar(context, index);
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              ClipOval(
+                                child: Material(
+                                  color: Colors.grey[400], // button color
+                                  child: InkWell(
+                                    splashColor:
+                                        Colors.red[400], // inkwell color
+                                    child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Icon(Icons.delete_forever)),
+                                    onTap: () async {
+                                      if (await confirm(context,
+                                          title: Text("Deletar"),
+                                          textOK: Text("Sim"),
+                                          textCancel: Text("Não"),
+                                          content: Text("Deletar '" +
+                                              eventos[index].nome +
+                                              "' para sempre?")))
+                                        deletarEvento(eventos[index]);
+                                    },
+                                  ),
+                                ),
+                              )
+                            ]),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Container(child: Center(child: getWidget(index))),
                       ])
                     ],
