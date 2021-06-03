@@ -9,7 +9,9 @@ import 'package:projeto_mobile/models/lugar_model.dart';
 import 'package:projeto_mobile/models/tipo_model.dart';
 
 class EditarEvento extends StatefulWidget {
-  EditarEvento({Key key, this.lugares, this.tipos, this.funcionarios, this.evento}) : super(key: key);
+  EditarEvento(
+      {Key key, this.lugares, this.tipos, this.funcionarios, this.evento})
+      : super(key: key);
 
   final Evento evento;
   final List<Lugar> lugares;
@@ -23,30 +25,31 @@ class EditarEvento extends StatefulWidget {
 class _EditarEventoState extends State<EditarEvento> {
   Evento evento;
   List<Funcionario> convidados = [];
+  Funcionario responsavel;
 
   final _nomeController = TextEditingController();
   final _dataController = TextEditingController();
   final _responsavelController = TextEditingController();
 
   editarEvento() {
-    var e = evento;
-    APIServices.editarEvento(evento).then((response) {
-
-    });
+    evento.nome = _nomeController.text;
+    evento.responsavel = responsavel.id.toString();
+    evento.data = _dataController.text;
+    APIServices.editarEvento(evento).then((response) {});
   }
 
   @override
   void initState() {
     evento = widget.evento;
+    responsavel = widget.funcionarios[0];
     _nomeController.text = evento.nome;
     _dataController.text = evento.data;
     _responsavelController.text = evento.responsavel;
 
-    for(var func in widget.funcionarios)
-      for(var conv in evento.participantes)
-        if(func.id == conv.id)
-          convidados.add(func);
-    
+    for (var func in widget.funcionarios)
+      for (var conv in evento.participantes)
+        if (func.id == conv.id) convidados.add(func);
+
     super.initState();
   }
 
@@ -83,10 +86,14 @@ class _EditarEventoState extends State<EditarEvento> {
               });
             },
             items: setItensTipos()),
-        TextFormField(
-            controller: _responsavelController,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(labelText: "Responsavel")),
+        DropdownButton<Funcionario>(
+            value: responsavel,
+            onChanged: (Funcionario responsavelSelecionado) {
+              setState(() {
+                responsavel = responsavelSelecionado;
+              });
+            },
+            items: setItensResponsavel()),
         Container(
           child: MultiSelectDialogField(
             initialValue: convidados,
@@ -131,6 +138,12 @@ class _EditarEventoState extends State<EditarEvento> {
   List<DropdownMenuItem<String>> setItensTipos() {
     return widget.tipos
         .map((e) => DropdownMenuItem(value: e.nome, child: Text(e.nome)))
+        .toList();
+  }
+
+  List<DropdownMenuItem<Funcionario>> setItensResponsavel() {
+    return widget.funcionarios
+        .map((e) => DropdownMenuItem(value: e, child: Text(e.nome)))
         .toList();
   }
 

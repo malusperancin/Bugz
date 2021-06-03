@@ -71,24 +71,26 @@ class _EventoState extends State<Eventos> {
   }
 
   deletarEvento(Evento evento) async {
-    eventos.remove(evento);
-
     var deletou = await APIServices.deletarEvento(evento);
-    
-    if(!deletou) //se deu erro
-      eventos.add(evento);
+    getEventos();
+    setState(() {});
+
+    if (!deletou) {}
   }
 
-    void telaEditar(BuildContext context, var indice) async {
-      final result = await Navigator.push(
+  void telaEditar(BuildContext context, var indice) async {
+    final result = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: 
-            (context) => EditarEvento(evento: eventos[indice], lugares: lugares, tipos: tipos, funcionarios: funcionarios))
-        );
+            builder: (context) => EditarEvento(
+                evento: eventos[indice],
+                lugares: lugares,
+                tipos: tipos,
+                funcionarios: funcionarios)));
 
-      eventos[indice] = result;
-    }
+    getEventos();
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -265,7 +267,13 @@ class _EventoState extends State<Eventos> {
                                             height: 40,
                                             child: Icon(Icons.delete_forever)),
                                         onTap: () async {
-                                          if (await confirm(context,title: Text("Deletar"), textOK: Text("Sim"), textCancel: Text("Não"), content: Text("Deletar '"+ eventos[index].nome +"' para sempre?"))) 
+                                          if (await confirm(context,
+                                              title: Text("Deletar"),
+                                              textOK: Text("Sim"),
+                                              textCancel: Text("Não"),
+                                              content: Text("Deletar '" +
+                                                  eventos[index].nome +
+                                                  "' para sempre?")))
                                             deletarEvento(eventos[index]);
                                         },
                                       ),

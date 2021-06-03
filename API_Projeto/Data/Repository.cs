@@ -62,7 +62,7 @@ namespace Bugz.Data
             
             SqlCommand cmd = new SqlCommand("comando", con);
 
-            cmd.CommandText = $"sp_addEvento '{evento.Nome}', '{evento.Data}', '{evento.Lugar}', '{evento.Tipo}', {2}";
+            cmd.CommandText = $"sp_addEvento '{evento.Nome}', '{evento.Data}', '{evento.Lugar}', '{evento.Tipo}', {Convert.ToInt32(evento.Responsavel)}";
 
             SqlDataReader leitor = cmd.ExecuteReader();
             cmd.CommandText = "";
@@ -229,7 +229,7 @@ namespace Bugz.Data
             
             SqlCommand cmd = new SqlCommand("comando", con);
 
-            cmd.CommandText = $"sp_updateEvento {evento.Id}, '{evento.Nome}', '{evento.Data}', '{evento.Lugar}', '{evento.Tipo}', {2}";
+            cmd.CommandText = $"sp_updateEvento {evento.Id}, '{evento.Nome}', '{evento.Data}', '{evento.Lugar}', '{evento.Tipo}', {Convert.ToInt32(evento.Responsavel)}";
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = "";
@@ -243,16 +243,16 @@ namespace Bugz.Data
             for(int i = 0; i < evento.Participantes.Length; i++)
                 antigosPar.Remove(antigosPar.Find(p => p.Id == evento.Participantes[i].Id));
 
-            for(int i = 0; i < novosPar.Count; i++)
-                cmd.CommandText += $"insert into ParticipanteEvento values ({novosPar[i].Id}, {evento.Id}) ";
+            for (int i = 0; i < novosPar.Count; i++){
+                cmd.CommandText = $"insert into ParticipanteEvento values ({novosPar[i].Id}, {evento.Id}) ";
+                cmd.ExecuteNonQuery();
+            }
 
-            if(antigosPar.Count > 0)
-                cmd.CommandText += " delete from ParticipanteEvento where ";
-
-            for(int i = 0; i < antigosPar.Count; i++)
-                cmd.CommandText += $"idParticipante={antigosPar[i].Id} " + (i==antigosPar.Count-1?" ":"or ");
-
-            cmd.ExecuteNonQuery();
+            for (int i = 0; i < antigosPar.Count; i++){
+                cmd.CommandText = $"delete from ParticipanteEvento where idParticipante={antigosPar[i].Id} ";
+                cmd.ExecuteNonQuery();
+            }
+    
             con.Close();
         }
       
@@ -263,7 +263,10 @@ namespace Bugz.Data
             
             SqlCommand cmd = new SqlCommand("comando", con);
 
-            cmd.CommandText = $"delete from ParticipanteEvento where idEvento = {id} delete from Evento where id = {id}";
+            cmd.CommandText = $"delete from ParticipanteEvento where idEvento = {id}";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"delete from Evento where id = {id}";
             cmd.ExecuteNonQuery();
         }
         

@@ -28,13 +28,13 @@ class Evento {
 
   Map toJson() {
     var part = [];
-    for(int i = 0; i < this.participantes.length; i++) {
+    for (int i = 0; i < this.participantes.length; i++) {
       part.add(this.participantes[i].toJson());
     }
 
     return {
       'id': id,
-      'name': nome,
+      'nome': nome,
       'data': data,
       'lugar': lugar,
       'tipo': tipo,

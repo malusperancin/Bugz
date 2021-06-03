@@ -9,7 +9,8 @@ import 'package:projeto_mobile/models/lugar_model.dart';
 import 'package:projeto_mobile/models/tipo_model.dart';
 
 class FormEvento extends StatefulWidget {
-  FormEvento({Key key, this.lugares, this.tipos, this.funcionarios}) : super(key: key);
+  FormEvento({Key key, this.lugares, this.tipos, this.funcionarios})
+      : super(key: key);
 
   final List<Lugar> lugares;
   final List<Tipo> tipos;
@@ -20,19 +21,18 @@ class FormEvento extends StatefulWidget {
 }
 
 class _FormEventoState extends State<FormEvento> {
-  String lugar = "";
-  String tipo = "";
-  Evento evento;
+  Evento evento = new Evento(0, "", "", "", "", "", []);
   List<Funcionario> convidados = [];
+  Funcionario responsavel;
 
   final _nomeController = TextEditingController();
   final _dataController = TextEditingController();
-  final _responsavelController = TextEditingController();
 
   @override
   void initState() {
-    lugar = widget.lugares[0].nome;
-    tipo = widget.tipos[0].nome;
+    evento.lugar = widget.lugares[0].nome;
+    evento.tipo = widget.tipos[0].nome;
+    responsavel = widget.funcionarios[0];
 
     super.initState();
   }
@@ -54,26 +54,30 @@ class _FormEventoState extends State<FormEvento> {
             keyboardType: TextInputType.datetime,
             decoration: InputDecoration(labelText: "Data")),
         DropdownButton<String>(
-            value: lugar,
+            value: evento.lugar,
             icon: const Icon(Icons.location_on),
             onChanged: (String lugarSelecionado) {
               setState(() {
-                lugar = lugarSelecionado;
+                evento.lugar = lugarSelecionado;
               });
             },
             items: setItensLugares()),
         DropdownButton<String>(
-            value: tipo,
+            value: evento.tipo,
             onChanged: (String tipoSelecionado) {
               setState(() {
-                tipo = tipoSelecionado;
+                evento.tipo = tipoSelecionado;
               });
             },
             items: setItensTipos()),
-        TextFormField(
-            controller: _responsavelController,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(labelText: "Responsavel")),
+        DropdownButton<Funcionario>(
+            value: responsavel,
+            onChanged: (Funcionario responsavelSelecionado) {
+              setState(() {
+                responsavel = responsavelSelecionado;
+              });
+            },
+            items: setItensResponsavel()),
         Container(
           child: MultiSelectDialogField(
             items: setItensFuncionarios(),
@@ -112,9 +116,9 @@ class _FormEventoState extends State<FormEvento> {
             0,
             _nomeController.text,
             _dataController.text,
-            lugar,
-            tipo,
-            _responsavelController.text,
+            evento.lugar,
+            evento.tipo,
+            responsavel.id.toString(),
             convidados))
         .then((response) {});
   }
@@ -128,6 +132,12 @@ class _FormEventoState extends State<FormEvento> {
   List<DropdownMenuItem<String>> setItensTipos() {
     return widget.tipos
         .map((e) => DropdownMenuItem(value: e.nome, child: Text(e.nome)))
+        .toList();
+  }
+
+  List<DropdownMenuItem<Funcionario>> setItensResponsavel() {
+    return widget.funcionarios
+        .map((e) => DropdownMenuItem(value: e, child: Text(e.nome)))
         .toList();
   }
 
