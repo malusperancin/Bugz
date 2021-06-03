@@ -23,7 +23,7 @@ namespace Bugz.Controllers
         {
             try
             {
-                var result =  this.Repo.SpGetEventos();
+                var result = this.Repo.SpGetEventos();
                 return Ok(result);
             }
             catch

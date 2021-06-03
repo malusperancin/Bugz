@@ -22,7 +22,7 @@
   },
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "ProjetoPratica_API/1.0.0": {
+      "Bugz/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Cors": "2.2.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.3",
@@ -296,10 +296,10 @@
           "WindowsBase": "4.0.0.0"
         },
         "runtime": {
-          "ProjetoPratica_API.dll": {}
+          "Bugz.dll": {}
         },
         "compile": {
-          "ProjetoPratica_API.dll": {}
+          "Bugz.dll": {}
         }
       },
       "Microsoft.AspNetCore.Cors/2.2.0": {
@@ -2947,7 +2947,7 @@
     }
   },
   "libraries": {
-    "ProjetoPratica_API/1.0.0": {
+    "Bugz/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

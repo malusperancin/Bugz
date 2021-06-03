@@ -1,5 +1,4 @@
 import 'package:projeto_mobile/models/funcionario_model.dart';
-import 'dart:convert';
 
 class Evento {
   int id;

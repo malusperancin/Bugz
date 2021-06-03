@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Bugz.Data;
 
-namespace ProjetoPratica_API
+namespace Bugz
 {
     public class Startup
     {

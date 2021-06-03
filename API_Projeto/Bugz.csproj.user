@@ -4,6 +4,6 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>ProjetoPratica_API</ActiveDebugProfile>
+    <ActiveDebugProfile>Bugz</ActiveDebugProfile>
   </PropertyGroup>
 </Project>

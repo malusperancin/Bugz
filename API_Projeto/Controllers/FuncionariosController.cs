@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Bugz.Data;
 using Bugz.Models;
 
-namespace ProjetoPratica_API.Controllers
+namespace Bugz.Controllers
 {
     [EnableCors("*")]
     [Route("api/[controller]")]

@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/API_Projeto/bin/Debug/netcoreapp3.1/ProjetoPratica_API.dll",
+            "program": "${workspaceFolder}/API_Projeto/bin/Debug/netcoreapp3.1/Bugz.dll",
             "args": [],
             "cwd": "${workspaceFolder}/API_Projeto",
             "stopAtEntry": false,

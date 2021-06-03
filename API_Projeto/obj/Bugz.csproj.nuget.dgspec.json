@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj": {}
+    "C:\\Users\\vinic\\OneDrive\\Documentos\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj": {
+    "C:\\Users\\vinic\\OneDrive\\Documentos\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj",
+        "projectUniqueName": "C:\\Users\\vinic\\OneDrive\\Documentos\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj",
         "projectName": "Bugz",
-        "projectPath": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj",
-        "packagesPath": "C:\\Users\\Rodrigo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Rodrigo\\Documents\\GitHub\\Projeto-Flutter\\API_Projeto\\obj\\",
+        "projectPath": "C:\\Users\\vinic\\OneDrive\\Documentos\\GitHub\\Projeto-Flutter\\API_Projeto\\Bugz.csproj",
+        "packagesPath": "C:\\Users\\vinic\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vinic\\OneDrive\\Documentos\\GitHub\\Projeto-Flutter\\API_Projeto\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "c:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Rodrigo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\vinic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -29,7 +26,6 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -41,7 +37,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",
@@ -66,12 +61,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[3.1.13, 3.1.13]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -80,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "c:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

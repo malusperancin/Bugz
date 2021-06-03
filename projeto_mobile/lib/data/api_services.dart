@@ -3,7 +3,7 @@ import 'package:projeto_mobile/models/evento_model.dart';
 import 'dart:convert';
 
 class APIServices {
-  static final String url = 'http://192.168.0.136:5001/api/';
+  static final String url = 'http://192.168.1.120:5001/api/';
 
   static Map<String, String> header = {
     'Content-type': 'application/json',
@@ -40,11 +40,11 @@ class APIServices {
   }
 
   static Future editarEvento(Evento evento) async {
-    return await http.put(Uri.parse(url + 'eventos/' + evento.id.toString()),
-        body: evento);
+    return await http.put(Uri.parse(url + 'eventos/' + evento.id.toString()), headers: header, body: json.encode(evento.toJson()));
   }
 
-  static Future deletarEvento(Evento evento) async {
-    return await http.put(Uri.parse(url + 'eventos/' + evento.id.toString()));
+  static Future<bool> deletarEvento(Evento evento) async {
+    var resultado = await http.put(Uri.parse(url + 'eventos/' + evento.id.toString()));
+    return Future.value(resultado.statusCode == 200 ? true : false);
   }
 }

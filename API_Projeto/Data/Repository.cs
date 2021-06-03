@@ -246,7 +246,8 @@ namespace Bugz.Data
             for(int i = 0; i < novosPar.Count; i++)
                 cmd.CommandText += $"insert into ParticipanteEvento values ({novosPar[i].Id}, {evento.Id}) ";
 
-            cmd.CommandText += " delete from ParticipanteEvento where ";
+            if(antigosPar.Count > 0)
+                cmd.CommandText += " delete from ParticipanteEvento where ";
 
             for(int i = 0; i < antigosPar.Count; i++)
                 cmd.CommandText += $"idParticipante={antigosPar[i].Id} " + (i==antigosPar.Count-1?" ":"or ");

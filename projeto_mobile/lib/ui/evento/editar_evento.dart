@@ -8,20 +8,19 @@ import 'package:projeto_mobile/data/api_services.dart';
 import 'package:projeto_mobile/models/lugar_model.dart';
 import 'package:projeto_mobile/models/tipo_model.dart';
 
-class FormEvento extends StatefulWidget {
-  FormEvento({Key key, this.lugares, this.tipos, this.funcionarios}) : super(key: key);
+class EditarEvento extends StatefulWidget {
+  EditarEvento({Key key, this.lugares, this.tipos, this.funcionarios, this.evento}) : super(key: key);
 
+  final Evento evento;
   final List<Lugar> lugares;
   final List<Tipo> tipos;
   final List<Funcionario> funcionarios;
 
   @override
-  _FormEventoState createState() => _FormEventoState();
+  _EditarEventoState createState() => _EditarEventoState();
 }
 
-class _FormEventoState extends State<FormEvento> {
-  String lugar = "";
-  String tipo = "";
+class _EditarEventoState extends State<EditarEvento> {
   Evento evento;
   List<Funcionario> convidados = [];
 
@@ -29,11 +28,25 @@ class _FormEventoState extends State<FormEvento> {
   final _dataController = TextEditingController();
   final _responsavelController = TextEditingController();
 
+  editarEvento() {
+    var e = evento;
+    APIServices.editarEvento(evento).then((response) {
+
+    });
+  }
+
   @override
   void initState() {
-    lugar = widget.lugares[0].nome;
-    tipo = widget.tipos[0].nome;
+    evento = widget.evento;
+    _nomeController.text = evento.nome;
+    _dataController.text = evento.data;
+    _responsavelController.text = evento.responsavel;
 
+    for(var func in widget.funcionarios)
+      for(var conv in evento.participantes)
+        if(func.id == conv.id)
+          convidados.add(func);
+    
     super.initState();
   }
 
@@ -54,19 +67,19 @@ class _FormEventoState extends State<FormEvento> {
             keyboardType: TextInputType.datetime,
             decoration: InputDecoration(labelText: "Data")),
         DropdownButton<String>(
-            value: lugar,
+            value: evento.lugar,
             icon: const Icon(Icons.location_on),
             onChanged: (String lugarSelecionado) {
               setState(() {
-                lugar = lugarSelecionado;
+                evento.lugar = lugarSelecionado;
               });
             },
             items: setItensLugares()),
         DropdownButton<String>(
-            value: tipo,
+            value: evento.tipo,
             onChanged: (String tipoSelecionado) {
               setState(() {
-                tipo = tipoSelecionado;
+                evento.tipo = tipoSelecionado;
               });
             },
             items: setItensTipos()),
@@ -76,6 +89,7 @@ class _FormEventoState extends State<FormEvento> {
             decoration: InputDecoration(labelText: "Responsavel")),
         Container(
           child: MultiSelectDialogField(
+            initialValue: convidados,
             items: setItensFuncionarios(),
             buttonText: Text("Participantes"),
             cancelText: Text("Fechar"),
@@ -86,6 +100,7 @@ class _FormEventoState extends State<FormEvento> {
             listType: MultiSelectListType.CHIP,
             onConfirm: (values) {
               convidados = values;
+              evento.participantes = convidados;
             },
             searchable: true,
           ),
@@ -97,26 +112,14 @@ class _FormEventoState extends State<FormEvento> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  addEvento();
+                  editarEvento();
                 },
-                child: Text("Criar evento",
+                child: Text("Editar evento",
                     style: TextStyle(color: Colors.white, fontSize: 16)),
               ),
             ))
       ])),
     )));
-  }
-
-  addEvento() {
-    APIServices.adicionarEvento(new Evento(
-            0,
-            _nomeController.text,
-            _dataController.text,
-            lugar,
-            tipo,
-            _responsavelController.text,
-            convidados))
-        .then((response) {});
   }
 
   List<DropdownMenuItem<String>> setItensLugares() {
@@ -133,7 +136,7 @@ class _FormEventoState extends State<FormEvento> {
 
   List<MultiSelectItem<Funcionario>> setItensFuncionarios() {
     return widget.funcionarios
-        .map((e) => MultiSelectItem(e, e.nome + "  " + e.equipe))
+        .map((e) => MultiSelectItem(e, e.nome + " " + e.equipe))
         .toList();
   }
 }
